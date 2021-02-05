@@ -19,25 +19,26 @@ Prof. Timothy Bretl
 * Email: <tbretl@illinois.edu>
 * Phone: 217-244-3126
 * [Website](https://bretl.csl.illinois.edu)
-* Physical Office: 321A Talbot Laboratory or 158 Coordinated Science Laboratory
-* Virtual Office: Zoom ([by appointment](https://calendly.com/timbretl))
-* Office Hours: TBA or ([by appointment](https://calendly.com/timbretl))
+* Office Hours:
+    * Thursdays, 1:00pm-2:00pm CST, by gather.town (see [Campuswire](https://campuswire.com/c/GC4DB42F3/feed/50) for link)
+    * [By appointment on Zoom](https://calendly.com/timbretl)
 
 ## Teaching Assistant
 
 Mr. Jacob Kraft
 * Email: <jacobgk2@illinois.edu>
-* Phone: TBA
-* Physical Office: TBA
-* Virtual Office: TBA
-* Office Hours: TBA
+* Phone: 440-409-1499
+* Office Hours:
+    * Tuesdays, 2:00pm-3:00pm CST, by gather.town (see [Campuswire](https://campuswire.com/c/GC4DB42F3/feed/50) for link)
+    * Thursdays, 2:00pm-3:00pm CST, by gather.town (see [Campuswire](https://campuswire.com/c/GC4DB42F3/feed/50) for link)
+    * [By appointment on Zoom](https://calendly.com/jacobgk2)
 
 ## Time and Place
 
 Lecture will be synchronous with both an in-person and remote option, and will also be recorded for later review.
 * Time: Mondays, Wednesdays, and Fridays from 11:00am-11:50am CST
 * In-Person: 100 Noyes Laboratory
-* Remote: Zoom (see [Campuswire](https://campuswire.com/c/GC4DB42F3) for link)
+* Remote: Zoom (see [Campuswire](https://campuswire.com/c/GC4DB42F3/feed/5) for link)
 * Recording: MediaSpace ([view](https://mediaspace.illinois.edu/channel/AE353+%28Spring+2021%29/) or [subscribe](https://mediaspace.illinois.edu/channel/AE353+%28Spring+2021%29/198983563/subscribe))
 
 ## Discussion Forum
