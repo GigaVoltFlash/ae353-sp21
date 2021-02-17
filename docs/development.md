@@ -72,9 +72,9 @@ Second, I created a [Gemfile](https://bundler.io/man/gemfile.5.html#NAME) and in
 
 Third, I tested the site by following [these instructions from GitHub](https://docs.github.com/en/github/working-with-github-pages/testing-your-github-pages-site-locally-with-jekyll). In particular, still inside the `docs/` folder, I called
 ```
-bundle exec jekyll serve
+bundle exec jekyll serve --baseurl '/ae353-sp21' --livereload
 ```
-and then opened `http://localhost:4000` in a browser.
+and then opened `http://localhost:4000/ae353-sp21/` in a browser. The `--livereload` argument (see [docs on serve command options](https://jekyllrb.com/docs/configuration/options/#serve-command-options)) makes it so the browser will automatically refresh with each change made to source files. See ["Clearing Up Confusion Around baseurl -- Again"](https://byparker.com/blog/2014/clearing-up-confusion-around-baseurl/) for why the `--baseurl '/ae353-sp21'` argument is necessary.
 
 The key benefit of this setup is that any local changes I make to files (e.g., this one: `howto.md`) show up immediately in my browser on `localhost`. In contrast, if I `git push` these changes, it can take several minutes for the site to rebuild and for these changes to show up in my browser on `tbretl.github.io/ae353-sp21`.
 
@@ -83,5 +83,21 @@ It took several hours to figure this all out. There were three causes of delay:
 * I had to start over after I realized it was important to install Ruby with Homebrew. MacOS ships with Ruby, but this is installed globally, and you have the usual problem of needing to run with `sudo` when trying to subsequently install anything with bundler.
 * Instructions for site creation assumed I was starting from scratch. Apparently, most people who recognize the need for local testing create the site with that in mind from the start. So, it took me a while to understand the `bundle init` / `bundle install` process.
 * It took me forever to find the fix to `bundler: failed to load command: jekyll` (see above).
+* I did not understand the `baseurl` concept (see above).
 
 If I did this all again, it would take no more than ten minutes.
+
+
+## How to create an Illinois Media Space channel that accepts student submissions
+
+Create a channel on [Illinois Media Space](https://mediaspace.illinois.edu) in [the usual way](https://mediaspace.illinois.edu/help#tut-createchannel) (also see [video tutorial](https://mediaspace.illinois.edu/media/t/1_l8xu6p9n/33192941)). Set permissions to "Shared Repository".
+
+You will probably want to keep this channel private so that only enrolled students can view and contribute content. This is done by ["Rostering a MediaSpace Channel with Students Enrolled in a Course"](https://publish.illinois.edu/id-training/rostering-a-mediaspace-channel-with-students-enrolled-in-a-course/). In particular, follow these steps:
+
+* Add a tag like `AE 353 A 2021 Spring CRN29907` where both the section (`A` in this case) and the `CRN` can be found on [Course Explorer](https://courses.illinois.edu). This tag must be formatted **exactly as shown**. Do not forget to "Save" your channel after adding the tag, if you are editing.
+
+* Wait 5 minutes. A group will be created in Illinois Media Space whose members are all students enrolled in the section of your course that you specified.
+
+* Edit your channel again. Click on the "Users" tab. Click "Add Users". Click "Contributer". Type the exact same string you used for the tag, but with underscores instead of spaces. For example: `AE_353_A_2021_Spring_CRN29907`. If that group does not appear, then either (1) you haven't waited long enough, (2) you failed to save the channel when adding the tag, or (3) you had a typo in the tag name - for example, `AE 353 A 22021 Spring CRN29907` isn't going to work.
+
+At this point, all enrolled students (and nobody else) will be able to upload videos to this channel and view videos in this channel.
