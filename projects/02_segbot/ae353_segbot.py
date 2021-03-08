@@ -37,6 +37,13 @@ class RobotSimulator:
                                    flags=(p.URDF_USE_IMPLICIT_CYLINDER  |
                                           p.URDF_USE_INERTIA_FROM_FILE  ))
 
+        # Second robot, opposite side of the track
+        self.robot2_id = p.loadURDF(os.path.join('.', 'urdf', 'segbot.urdf'),
+                            basePosition=np.array([0., self.track_radius if self.turn_left else -self.track_radius, 0.325 + 0.3]),
+                            baseOrientation=p.getQuaternionFromEuler([0., 0., 0.]),
+                            flags=(p.URDF_USE_IMPLICIT_CYLINDER  |
+                                    p.URDF_USE_INERTIA_FROM_FILE  ))
+
         # Load plane and track
         self.plane_id = p.loadURDF(os.path.join('.', 'urdf', 'plane.urdf'),
                                         basePosition=np.array([0., 0., -5.]),
@@ -89,7 +96,27 @@ class RobotSimulator:
                                     p.VELOCITY_CONTROL, forces=np.zeros(self.num_joints))
 
 
-    def get_sensor_measurements(self):
+        # Set damping of joints (i.e., coefficient of viscous friction)
+        for id in self.joint_ids:
+            p.changeDynamics(self.robot2_id, id, jointDamping=damping)
+
+        # Set contact parameters
+        for object_id in [self.robot2_id, self.track_id, self.plane_id]:
+            for joint_id in range(-1, p.getNumJoints(object_id)):
+                p.changeDynamics(object_id, joint_id,
+                    lateralFriction=1.0,
+                    spinningFriction=0.0,
+                    rollingFriction=0.0,
+                    restitution=0.5,
+                    contactDamping=-1,
+                    contactStiffness=-1)
+
+        # Disable velocity control on joints so we can use torque control
+        p.setJointMotorControlArray(self.robot2_id, self.joint_ids,
+                                    p.VELOCITY_CONTROL, forces=np.zeros(self.num_joints))
+
+
+    def get_sensor_measurements(self, robot_id):
         """
         The measurements are:
 
@@ -105,13 +132,13 @@ class RobotSimulator:
         """
 
         # Position of each wheel
-        link_states = p.getLinkStates(self.robot_id, self.joint_ids)
+        link_states = p.getLinkStates(robot_id, self.joint_ids)
         pl = np.array(link_states[0][0])
         pr = np.array(link_states[1][0])
         pc = 0.5 * (pr + pl)
 
         # Velocity of each wheel
-        joint_states = p.getJointStates(self.robot_id, self.joint_ids)
+        joint_states = p.getJointStates(robot_id, self.joint_ids)
         q = np.zeros([self.num_joints])
         v = np.zeros_like(q)
         for i in range(self.num_joints):
@@ -140,8 +167,8 @@ class RobotSimulator:
         turning_rate = (vr - vl) / np.linalg.norm(pr - pl)
 
         # Position, orientation, and angular velocity of chassis
-        pos, ori = p.getBasePositionAndOrientation(self.robot_id)
-        vel = p.getBaseVelocity(self.robot_id)
+        pos, ori = p.getBasePositionAndOrientation(robot_id)
+        vel = p.getBaseVelocity(robot_id)
         R_body_in_world = np.reshape(np.array(p.getMatrixFromQuaternion(ori)), (3, 3))
         w_in_world = np.reshape(np.array(vel[1]), (3, 1))
         w_in_body = R_body_in_world.T @ w_in_world
@@ -208,13 +235,13 @@ class RobotSimulator:
         for i, joint_id in enumerate(self.joint_ids):
             p.resetJointState(self.robot_id, joint_id, 0., angvel_wheels)
 
-    def set_joint_torque(self, tau):
+    def set_joint_torque(self, tau, robot_id):
         """
         sets joint torques to the values specified by the 1D numpy array tau
         """
         assert(tau.shape[0] == self.num_joints)
         zero_gains = tau.shape[0] * (0.,)
-        p.setJointMotorControlArray(self.robot_id, self.joint_ids,
+        p.setJointMotorControlArray(robot_id, self.joint_ids,
                                     p.TORQUE_CONTROL, forces=tau,
                                     positionGains=zero_gains, velocityGains=zero_gains)
 
