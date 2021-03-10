@@ -181,6 +181,8 @@ description: What we will do from day to day
 
 * [Video](https://mediaspace.illinois.edu/media/t/1_hnt46jl3/)
 * [Survey](https://docs.google.com/forms/d/e/1FAIpQLSde-VVpg-nbl3O23iFCueGW7oC23jvHFhLdHsTgvUPpskc5nQ/viewform?usp=sf_link) (<a role="button" data-bs-toggle="collapse" href="#day15-survey-results" aria-expanded="false" aria-controls="day15-survey-results">Results</a>)
+* [Notes (After Class)](./notes/Day15-EigenvaluePlacement-InClass.pdf)
+* [Example code](https://github.com/tbretl/ae353-sp21/tree/main/examples/day15_platform) - in particular, see [this notebook](https://github.com/tbretl/ae353-sp21/blob/main/examples/day15_platform/PlatformDemo-InClass.ipynb) for an example of how to do eigenvalue placement with [scipy.signal.place_poles](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.place_poles.html)
 * [PrairieLearn HW7](https://www.prairielearn.org/pl/course_instance/128571/assessments)
 
 <div class="collapse" id="day15-survey-results">
@@ -202,7 +204,43 @@ description: What we will do from day to day
   </div>
 </div>
 
-### Day 17 (Friday, March 5)
+### Day 17: Ackermann's method - controllable canonical form (Friday, March 5)
 
-* [Survey](https://docs.google.com/forms/d/e/1FAIpQLScILM7dwAbDbljh7sGUIvc5jJeCLDpmitX4lEzYo1nAEXPkvA/viewform?usp=sf_link)
+* [Video](https://mediaspace.illinois.edu/media/t/1_hmlrvmv1/)
+* [Survey](https://docs.google.com/forms/d/e/1FAIpQLScILM7dwAbDbljh7sGUIvc5jJeCLDpmitX4lEzYo1nAEXPkvA/viewform?usp=sf_link) (<a role="button" data-bs-toggle="collapse" href="#day17-survey-results" aria-expanded="false" aria-controls="day17-survey-results">Results</a>)
 * [Notes (Before Class)](./notes/Day17-Acker.pdf)
+* [Notes (After Class)](./notes/Day17-Acker-InClass.pdf)
+* [Example code](https://github.com/tbretl/ae353-sp21/tree/main/examples/day17_ccf/CCF-demos.ipynb)
+* Supplementary videos on the details of Ackermann's method:
+  - [Ackermann's Method, Part 1: Eigenvalues are invariant to coordinate transformation](https://mediaspace.illinois.edu/media/t/1_93vewoav/)
+  - [Ackermann's Method, Part 2: Controllable canonical form](https://mediaspace.illinois.edu/media/t/1_rbf0x31w/)
+  - [Ackermann's Method, Part 3: How to put a system in controllable canonical form](https://mediaspace.illinois.edu/media/t/1_e6r6ljxc/)
+  - [Ackermann's Method, Part 4: Putting it all together](https://mediaspace.illinois.edu/media/t/1_sf1ydkq4/)
+* [PrairieLearn HW8](https://www.prairielearn.org/pl/course_instance/128571/assessments)
+
+<div class="collapse" id="day17-survey-results">
+  <div class="card card-body">
+    <iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTdUCOy6Rr24D7G1Q6F-YDk7IL9z4M-OkQL0e5QOu-Ho4qD8f_Iw4XngM9dMfb-FmTolER_OFexEoB2/pubchart?oid=1421442809&amp;format=interactive"></iframe>
+  </div>
+</div>
+
+## Week 7
+
+### Day 18: Ackermann's method - implications for controllability (Monday, March 8)
+
+* [Video](https://mediaspace.illinois.edu/media/t/1_9d7uv2dc/)
+* [Survey](https://docs.google.com/forms/d/e/1FAIpQLSeAPG_Uq04tIH8kWoMyF8HbNS_5A02XG_3y077J3vjRhtQTJw/viewform?usp=sf_link) (<a role="button" data-bs-toggle="collapse" href="#day18-survey-results" aria-expanded="false" aria-controls="day18-survey-results">Results</a>)
+* [Notes (Before Class)](./notes/Day18-Controllability.pdf)
+* [Notes (After Class)](./notes/Day18-Controllability-InClass.pdf)
+* [PrairieLearn HW9](https://www.prairielearn.org/pl/course_instance/128571/assessments)
+
+<div class="collapse" id="day18-survey-results">
+  <div class="card card-body">
+    <iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTLnBdQKRjI-OMibJg8XAChQqP7w3OofbZeX_vePYiq8QWRUKdKh8sFppPBaBF2UGk3zd-cRfwFnmkd/pubchart?oid=717280055&amp;format=interactive"></iframe>
+  </div>
+</div>
+
+### Day 19: Examples of what it means for a system to be controllable (Wednesday, March 10)
+
+* [Survey](https://docs.google.com/forms/d/e/1FAIpQLSemeHLQnWaiDCpE3CthZqkkeKaRAkVBLO-Jwzdh8IFtXIw1KA/viewform?usp=sf_link)
+* [Example code](https://github.com/tbretl/ae353-sp21/tree/main/examples/day19_controllability/) — in particular, see [this notebook](https://github.com/tbretl/ae353-sp21/tree/main/examples/day19_controllability/ExamplesOfControllability.ipynb) for many examples of how to check if a system is controllable
