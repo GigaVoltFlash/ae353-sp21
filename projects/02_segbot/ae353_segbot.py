@@ -31,12 +31,13 @@ class RobotSimulator:
 
         # Load robot (with mass and inertia coming from the URDF rather than
         # being recomputed by pybullet)
-        self.robot_id = p.loadURDF(os.path.join('.', 'urdf', 'segbot.urdf'),
+        self.robot1_id = p.loadURDF(os.path.join('.', 'urdf', 'segbot.urdf'),
                                    basePosition=np.array([0., -self.track_radius if self.turn_left else self.track_radius, 0.325 + 0.3]),
                                    baseOrientation=p.getQuaternionFromEuler([0., 0., 0.]),
                                    flags=(p.URDF_USE_IMPLICIT_CYLINDER  |
                                           p.URDF_USE_INERTIA_FROM_FILE  ))
 
+        #DUPLICATE FOR ROBOT 2
         # Second robot, opposite side of the track
         self.robot2_id = p.loadURDF(os.path.join('.', 'urdf', 'segbot.urdf'),
                             basePosition=np.array([0., self.track_radius if self.turn_left else -self.track_radius, 0.325 + 0.3]),
@@ -56,32 +57,48 @@ class RobotSimulator:
 
         # Eliminate linear and angular damping (i.e., a poor model of drag that
         # is applied by default to every link)
-        for joint_id in range(p.getNumJoints(self.robot_id)):
-            p.changeDynamics(self.robot_id, joint_id, linearDamping=0., angularDamping=0.)
+        for joint_id in range(p.getNumJoints(self.robot1_id)):
+            p.changeDynamics(self.robot1_id, joint_id, linearDamping=0., angularDamping=0.)
+
+        #DUPLICATE FOR ROBOT 2
+        # Eliminate linear and angular damping (i.e., a poor model of drag that
+        # is applied by default to every link)
+        for joint_id in range(p.getNumJoints(self.robot2_id)):
+            p.changeDynamics(self.robot2_id, joint_id, linearDamping=0., angularDamping=0.)
 
         # Specify maximum applied torque
         self.tau_max = 5.
 
         # Create a dictionary that maps joint names to joint indices
-        self.joint_map = {}
-        for joint_index in range(p.getNumJoints(self.robot_id)):
-            joint_name = p.getJointInfo(self.robot_id, joint_index)[1].decode('UTF-8')
-            self.joint_map[joint_name] = joint_index
+        self.joint_map1 = {}
+        for joint_index in range(p.getNumJoints(self.robot1_id)):
+            joint_name = p.getJointInfo(self.robot1_id, joint_index)[1].decode('UTF-8')
+            self.joint_map1[joint_name] = joint_index
+        
+        #DUPLICATE FOR ROBOT 2
+        # Create a dictionary that maps joint names to joint indices
+        self.joint_map2 = {}
+        for joint_index in range(p.getNumJoints(self.robot2_id)):
+            joint_name = p.getJointInfo(self.robot2_id, joint_index)[1].decode('UTF-8')
+            self.joint_map2[joint_name] = joint_index
 
         # Create a 1D numpy array with the index (according to bullet) of each joint we care about
         self.joint_names = [
             'chassis_to_left_wheel',
             'chassis_to_right_wheel',
         ]
+
         self.num_joints = len(self.joint_names)
-        self.joint_ids = np.array([self.joint_map[joint_name] for joint_name in self.joint_names])
+        self.joint_ids1 = np.array([self.joint_map1[joint_name] for joint_name in self.joint_names])
+        #DUPLICATE FOR ROBOT 2
+        self.joint_ids2 = np.array([self.joint_map2[joint_name] for joint_name in self.joint_names])
 
         # Set damping of joints (i.e., coefficient of viscous friction)
-        for id in self.joint_ids:
-            p.changeDynamics(self.robot_id, id, jointDamping=damping)
+        for id in self.joint_ids1:
+            p.changeDynamics(self.robot1_id, id, jointDamping=damping)
 
         # Set contact parameters
-        for object_id in [self.robot_id, self.track_id, self.plane_id]:
+        for object_id in [self.robot1_id, self.track_id, self.plane_id]:
             for joint_id in range(-1, p.getNumJoints(object_id)):
                 p.changeDynamics(object_id, joint_id,
                     lateralFriction=1.0,
@@ -92,14 +109,15 @@ class RobotSimulator:
                     contactStiffness=-1)
 
         # Disable velocity control on joints so we can use torque control
-        p.setJointMotorControlArray(self.robot_id, self.joint_ids,
+        p.setJointMotorControlArray(self.robot1_id, self.joint_ids1,
                                     p.VELOCITY_CONTROL, forces=np.zeros(self.num_joints))
 
-
+        #DUPLICATE FOR ROBOT 2
         # Set damping of joints (i.e., coefficient of viscous friction)
-        for id in self.joint_ids:
+        for id in self.joint_ids2:
             p.changeDynamics(self.robot2_id, id, jointDamping=damping)
-
+        
+        #DUPLICATE FOR ROBOT 2
         # Set contact parameters
         for object_id in [self.robot2_id, self.track_id, self.plane_id]:
             for joint_id in range(-1, p.getNumJoints(object_id)):
@@ -111,12 +129,14 @@ class RobotSimulator:
                     contactDamping=-1,
                     contactStiffness=-1)
 
+        #DUPLICATE FOR ROBOT 2
         # Disable velocity control on joints so we can use torque control
-        p.setJointMotorControlArray(self.robot2_id, self.joint_ids,
+        p.setJointMotorControlArray(self.robot2_id, self.joint_ids2,
                                     p.VELOCITY_CONTROL, forces=np.zeros(self.num_joints))
 
-
-    def get_sensor_measurements(self, robot_id):
+    # I changed the arguments of this function to take a specific robot_id and joint_ids so that it 
+    # can be used for both the bots.
+    def get_sensor_measurements(self, robot_id, joint_ids):
         """
         The measurements are:
 
@@ -132,13 +152,13 @@ class RobotSimulator:
         """
 
         # Position of each wheel
-        link_states = p.getLinkStates(robot_id, self.joint_ids)
+        link_states = p.getLinkStates(robot_id, joint_ids)
         pl = np.array(link_states[0][0])
         pr = np.array(link_states[1][0])
         pc = 0.5 * (pr + pl)
 
         # Velocity of each wheel
-        joint_states = p.getJointStates(robot_id, self.joint_ids)
+        joint_states = p.getJointStates(robot_id, joint_ids)
         q = np.zeros([self.num_joints])
         v = np.zeros_like(q)
         for i in range(self.num_joints):
@@ -199,10 +219,11 @@ class RobotSimulator:
         eul = p.getEulerFromQuaternion(ori)
         p.resetDebugVisualizerCamera(3., (eul[2] * 180 / np.pi) + yaw, -15, pos)
 
-    def set_actuator_commands(self, tau_left_desired, tau_right_desired):
+    # Similar to the sensor measurements, I made the joint_ids an argument to pass
+    def set_actuator_commands(self, robot_id, joint_ids, tau_left_desired, tau_right_desired):
         tau_left = np.clip(tau_left_desired, -self.tau_max, self.tau_max)
         tau_right = np.clip(tau_right_desired, -self.tau_max, self.tau_max)
-        self.set_joint_torque(np.array([tau_left, tau_right]))
+        self.set_joint_torque(np.array([tau_left, tau_right]), robot_id, joint_ids)
         return tau_left, tau_right
 
     def reset(self,
@@ -228,20 +249,31 @@ class RobotSimulator:
         # Place the robot
         pos = np.array([self.wheel_radius * np.sin(ground_pitch), initial_lateral_error + (-self.track_radius if self.turn_left else self.track_radius), 0.325 + 0.3])
         ori = p.getQuaternionFromEuler([0., initial_pitch, initial_heading_error])
-        p.resetBasePositionAndOrientation(self.robot_id, pos, ori)
+        p.resetBasePositionAndOrientation(self.robot1_id, pos, ori)
         vel = np.array([initial_speed * np.cos(initial_heading_error), initial_speed * np.sin(initial_heading_error), 0.])
-        p.resetBaseVelocity(self.robot_id, linearVelocity=vel)
+        p.resetBaseVelocity(self.robot1_id, linearVelocity=vel)
         angvel_wheels = initial_speed / self.wheel_radius
-        for i, joint_id in enumerate(self.joint_ids):
-            p.resetJointState(self.robot_id, joint_id, 0., angvel_wheels)
+        for i, joint_id in enumerate(self.joint_ids1):
+            p.resetJointState(self.robot1_id, joint_id, 0., angvel_wheels)
 
-    def set_joint_torque(self, tau, robot_id):
+        # DUPLICATE FOR ROBOT 2
+        # Place the robot
+        pos = np.array([self.wheel_radius * np.sin(ground_pitch), initial_lateral_error + (self.track_radius if self.turn_left else -self.track_radius), 0.325 + 0.3])
+        ori = p.getQuaternionFromEuler([0., initial_pitch, initial_heading_error])
+        p.resetBasePositionAndOrientation(self.robot2_id, pos, ori)
+        vel = np.array([initial_speed * np.cos(initial_heading_error), initial_speed * np.sin(initial_heading_error), 0.])
+        p.resetBaseVelocity(self.robot2_id, linearVelocity=vel)
+        angvel_wheels = initial_speed / self.wheel_radius
+        for i, joint_id in enumerate(self.joint_ids2):
+            p.resetJointState(self.robot2_id, joint_id, 0., angvel_wheels)
+
+    def set_joint_torque(self, tau, robot_id, joint_ids):
         """
         sets joint torques to the values specified by the 1D numpy array tau
         """
         assert(tau.shape[0] == self.num_joints)
         zero_gains = tau.shape[0] * (0.,)
-        p.setJointMotorControlArray(robot_id, self.joint_ids,
+        p.setJointMotorControlArray(robot_id, joint_ids,
                                     p.TORQUE_CONTROL, forces=tau,
                                     positionGains=zero_gains, velocityGains=zero_gains)
 
