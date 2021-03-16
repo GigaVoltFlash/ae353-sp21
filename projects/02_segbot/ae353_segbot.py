@@ -39,14 +39,8 @@ class RobotSimulator:
 
         #DUPLICATE FOR ROBOT 2
         # Second robot, opposite side of the track
-        '''
-        One of the major differences between robot1 and robot2 is that robot2 has the turn_left property inverted,
-        so wherever that logic is present, expected it to be inverted for robot2. This is mainly to place the robot
-        one the opposite side of the track. I want to find a better way to place it at any location without logic 
-        changes
-        '''
         self.robot2_id = p.loadURDF(os.path.join('.', 'urdf', 'segbot2.urdf'),
-                            basePosition=np.array([0., self.track_radius if self.turn_left else -self.track_radius, 0.325 + 0.3]),
+                            basePosition=np.array([0., self.track_radius if self.turn_left else self.track_radius, 0.325 + 0.3]),
                             baseOrientation=p.getQuaternionFromEuler([0., 0., 0.]),
                             flags=(p.URDF_USE_IMPLICIT_CYLINDER  |
                                     p.URDF_USE_INERTIA_FROM_FILE  ))
@@ -183,14 +177,18 @@ class RobotSimulator:
         a /= np.linalg.norm(a)
         ap = np.array([-a[1], a[0]])
         b = (pr - pl)[0:2]
-        if robot_id == self.robot1_id:
-            if not self.turn_left:
-                a *= -1.
-                ap *= -1.
-        elif robot_id == self.robot2_id:
-            if self.turn_left:
-                a *= -1.
-                ap *= -1.
+        if not self.turn_left:
+            a *= -1.
+            ap *= -1.
+        # This is if we want to invert the turn_left condition for the two robots
+        # if robot_id == self.robot1_id:
+        #     if not self.turn_left:
+        #         a *= -1.
+        #         ap *= -1.
+        # elif robot_id == self.robot2_id:
+        #     if self.turn_left:
+        #         a *= -1.
+        #         ap *= -1.
         heading_error = np.arctan2(np.dot(ap, b), np.dot(a, b))
 
         # Forward speed and turning rate
@@ -218,7 +216,7 @@ class RobotSimulator:
         p.resetDebugVisualizerCamera(17., -60, -35, [0., 0., -5.])
         self.camera_chase_yaw = None
 
-    def camera_chaseview(self, yaw=270.):
+    def camera_chaseview(self, robot_id, yaw=270.):
         """
         view from right side: yaw=0
         view from front: yaw=90
@@ -226,7 +224,7 @@ class RobotSimulator:
         view from back: yaw=270
         """
         self.camera_chase_yaw = yaw
-        pos, ori = p.getBasePositionAndOrientation(self.robot_id)
+        pos, ori = p.getBasePositionAndOrientation(robot_id)
         eul = p.getEulerFromQuaternion(ori)
         p.resetDebugVisualizerCamera(3., (eul[2] * 180 / np.pi) + yaw, -15, pos)
 
@@ -268,7 +266,8 @@ class RobotSimulator:
             p.resetJointState(self.robot1_id, joint_id, 0., angvel_wheels)
 
         # DUPLICATE FOR ROBOT 2
-        # Place the robot
+        # Place the robot, this is where we place the second robot on the other side,
+        # but this is causing issues with the heading error
         pos = np.array([self.wheel_radius * np.sin(ground_pitch), initial_lateral_error + (self.track_radius if self.turn_left else -self.track_radius), 0.325 + 0.3])
         ori = p.getQuaternionFromEuler([0., initial_pitch, initial_heading_error])
         p.resetBasePositionAndOrientation(self.robot2_id, pos, ori)
