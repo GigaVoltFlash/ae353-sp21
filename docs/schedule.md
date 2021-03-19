@@ -243,9 +243,45 @@ description: What we will do from day to day
 ### Day 19: Examples of what it means for a system to be controllable (Wednesday, March 10)
 
 * [Video](https://mediaspace.illinois.edu/media/t/1_hnn8rvm2/)
-* [Survey](https://docs.google.com/forms/d/e/1FAIpQLSemeHLQnWaiDCpE3CthZqkkeKaRAkVBLO-Jwzdh8IFtXIw1KA/viewform?usp=sf_link)
+* [Survey](https://docs.google.com/forms/d/e/1FAIpQLSemeHLQnWaiDCpE3CthZqkkeKaRAkVBLO-Jwzdh8IFtXIw1KA/viewform?usp=sf_link) (<a role="button" data-bs-toggle="collapse" href="#day19-survey-results" aria-expanded="false" aria-controls="day19-survey-results">Results</a>)
 * [Example code](https://github.com/tbretl/ae353-sp21/tree/main/examples/day19_controllability/) — in particular, see [this notebook](https://github.com/tbretl/ae353-sp21/tree/main/examples/day19_controllability/ExamplesOfControllability.ipynb) for many examples of how to check if a system is controllable
+
+<div class="collapse" id="day19-survey-results">
+  <div class="card card-body">
+    <iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRee2HZDmwynXpALVzR0pjh8DcD4j4zcdP9eEf98x_NZwA8qHRjd5lJJZ61cg7KOUsLSFqL3bwGF9HE/pubchart?oid=861225748&amp;format=interactive"></iframe>
+  </div>
+</div>
 
 ### Day 20: How to improve your design projects (Friday, March 12)
 
+* [Video](https://mediaspace.illinois.edu/media/t/1_dgtyn48w/)
+* [Survey](https://docs.google.com/forms/d/e/1FAIpQLSfvfIBxZA--KsSlgtFSGR9lEvWpl4rJqE-zQ6qszH5LaLbrGA/viewform?usp=sf_link) (<a role="button" data-bs-toggle="collapse" href="#day20-survey-results" aria-expanded="false" aria-controls="day20-survey-results">Results</a>)
 * [Form to submit a project revision](https://docs.google.com/forms/d/e/1FAIpQLSf_mNfpDIt40F5JforQAA54fyc4Q_WgCG-vmPNQV8atj2oh-w/viewform?usp=sf_link)
+* [Shared document for collaborative in-class discussion about how to do your own work when collaborating with others](https://docs.google.com/document/d/1CYrNM3l2_w0XKv_xb5GccqLOrFv9USyypcXsEJxhmhk/edit?usp=sharing)
+
+<div class="collapse" id="day20-survey-results">
+  <div class="card card-body">
+    <iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQZmb31F-uu0SHwtP9RRG5vxKmQDueMO5Ose6LeasO-iRoboNj3EGQ0d0Yn2q6_JeN-4Jxs_-nSbmlz/pubchart?oid=1288860890&amp;format=interactive"></iframe>
+  </div>
+</div>
+
+## Week 8
+
+### Day 21: LQR - scalar example (Monday, March 15)
+
+* [Video](https://mediaspace.illinois.edu/media/t/1_gk0vqpgw/)
+* [Survey](https://docs.google.com/forms/d/e/1FAIpQLSfmkIEg8khvf6DrF-arOlqBN5zt5lK8pPxp2qjC6SF6wQCi-g/viewform?usp=sf_link) (<a role="button" data-bs-toggle="collapse" href="#day21-survey-results" aria-expanded="false" aria-controls="day21-survey-results">Results</a>)
+* [Example code](https://github.com/tbretl/ae353-sp21/tree/main/examples/day21_lqr_cost/)
+* [PrairieLearn HW10](https://www.prairielearn.org/pl/course_instance/128571/assessments)
+
+<div class="collapse" id="day21-survey-results">
+  <div class="card card-body">
+    <iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRNsjHB1wfMlBuXrRPDXpdN-jQD1ce9MPWs0t3QmzStiM0p8gxgV7PvVGnmP2Tv12pJHZizF6U4KR76/pubchart?oid=1729381461&amp;format=interactive"></iframe>
+  </div>
+</div>
+
+### Day 22: LQR - effect of initial conditions and of weights (Wednesday, March 17)
+
+* [Video](https://mediaspace.illinois.edu/media/t/1_vjy0xwiy/)
+* [Survey](https://docs.google.com/forms/d/e/1FAIpQLSfsXOl_Zy6qbGMZLoIp99PKZxCbPX_0n67F13R9nWPR-jRCGQ/viewform?usp=sf_link)
+* [Example code](https://github.com/tbretl/ae353-sp21/tree/main/examples/day22_lqr_ics_and_weights/)
