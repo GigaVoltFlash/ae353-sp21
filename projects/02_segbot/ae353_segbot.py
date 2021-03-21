@@ -212,7 +212,7 @@ class RobotSimulator:
         p.resetDebugVisualizerCamera(17., -60, -35, [0., 0., -5.])
         self.camera_chase_yaw = None
 
-    def camera_chaseview(self, robot_id, yaw=270.):
+    def camera_chaseview(self, yaw=270.):
         """
         view from right side: yaw=0
         view from front: yaw=90
@@ -220,7 +220,7 @@ class RobotSimulator:
         view from back: yaw=270
         """
         self.camera_chase_yaw = yaw
-        pos, ori = p.getBasePositionAndOrientation(robot_id)
+        pos, ori = p.getBasePositionAndOrientation(self.robot1_id)
         eul = p.getEulerFromQuaternion(ori)
         p.resetDebugVisualizerCamera(3., (eul[2] * 180 / np.pi) + yaw, -15, pos)
 
