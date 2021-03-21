@@ -5,9 +5,10 @@ import os
 import matplotlib.pyplot as plt
 
 class RobotSimulator:
-    def __init__(self, damping=0., dt=0.01, display=True):
+    def __init__(self, damping=0., dt=0.01, two_robots=False, display=True):
         # Choose the time step
         self.dt = dt
+        self.two_robots = two_robots
 
         # Define parameters
         self.track_radius = 10.
@@ -37,14 +38,6 @@ class RobotSimulator:
                                    flags=(p.URDF_USE_IMPLICIT_CYLINDER  |
                                           p.URDF_USE_INERTIA_FROM_FILE  ))
 
-        #DUPLICATE FOR ROBOT 2
-        # Second robot, opposite side of the track
-        self.robot2_id = p.loadURDF(os.path.join('.', 'urdf', 'segbot2.urdf'),
-                            basePosition=np.array([0., self.track_radius if self.turn_left else self.track_radius, 0.325 + 0.3]),
-                            baseOrientation=p.getQuaternionFromEuler([0., 0., 0.]),
-                            flags=(p.URDF_USE_IMPLICIT_CYLINDER  |
-                                    p.URDF_USE_INERTIA_FROM_FILE  ))
-
         # Load plane and track
         self.plane_id = p.loadURDF(os.path.join('.', 'urdf', 'plane.urdf'),
                                         basePosition=np.array([0., 0., -5.]),
@@ -54,17 +47,10 @@ class RobotSimulator:
                                         basePosition=np.array([0., 0., -2.5]),
                                         baseOrientation=p.getQuaternionFromEuler([0., 0., 0. if self.turn_left else np.pi]),
                                         useFixedBase=1)
-
         # Eliminate linear and angular damping (i.e., a poor model of drag that
         # is applied by default to every link)
         for joint_id in range(p.getNumJoints(self.robot1_id)):
             p.changeDynamics(self.robot1_id, joint_id, linearDamping=0., angularDamping=0.)
-
-        #DUPLICATE FOR ROBOT 2
-        # Eliminate linear and angular damping (i.e., a poor model of drag that
-        # is applied by default to every link)
-        for joint_id in range(p.getNumJoints(self.robot2_id)):
-            p.changeDynamics(self.robot2_id, joint_id, linearDamping=0., angularDamping=0.)
 
         # Specify maximum applied torque
         self.tau_max = 5.
@@ -74,13 +60,6 @@ class RobotSimulator:
         for joint_index in range(p.getNumJoints(self.robot1_id)):
             joint_name = p.getJointInfo(self.robot1_id, joint_index)[1].decode('UTF-8')
             self.joint_map1[joint_name] = joint_index
-        
-        #DUPLICATE FOR ROBOT 2
-        # Create a dictionary that maps joint names to joint indices
-        self.joint_map2 = {}
-        for joint_index in range(p.getNumJoints(self.robot2_id)):
-            joint_name = p.getJointInfo(self.robot2_id, joint_index)[1].decode('UTF-8')
-            self.joint_map2[joint_name] = joint_index
 
         # Create a 1D numpy array with the index (according to bullet) of each joint we care about
         self.joint_names = [
@@ -90,8 +69,6 @@ class RobotSimulator:
 
         self.num_joints = len(self.joint_names)
         self.joint_ids1 = np.array([self.joint_map1[joint_name] for joint_name in self.joint_names])
-        #DUPLICATE FOR ROBOT 2
-        self.joint_ids2 = np.array([self.joint_map2[joint_name] for joint_name in self.joint_names])
 
         # Set damping of joints (i.e., coefficient of viscous friction)
         for id in self.joint_ids1:
@@ -112,27 +89,46 @@ class RobotSimulator:
         p.setJointMotorControlArray(self.robot1_id, self.joint_ids1,
                                     p.VELOCITY_CONTROL, forces=np.zeros(self.num_joints))
 
-        #DUPLICATE FOR ROBOT 2
-        # Set damping of joints (i.e., coefficient of viscous friction)
-        for id in self.joint_ids2:
-            p.changeDynamics(self.robot2_id, id, jointDamping=damping)
-        
-        #DUPLICATE FOR ROBOT 2
-        # Set contact parameters
-        for object_id in [self.robot2_id, self.track_id, self.plane_id]:
-            for joint_id in range(-1, p.getNumJoints(object_id)):
-                p.changeDynamics(object_id, joint_id,
-                    lateralFriction=1.0,
-                    spinningFriction=0.0,
-                    rollingFriction=0.0,
-                    restitution=0.5,
-                    contactDamping=-1,
-                    contactStiffness=-1)
+        if (self.two_robots):
+            #DUPLICATE FOR ROBOT 2
+            # Second robot, opposite side of the track
+            self.robot2_id = p.loadURDF(os.path.join('.', 'urdf', 'segbot2.urdf'),
+                                basePosition=np.array([0., self.track_radius if self.turn_left else self.track_radius, 0.325 + 0.3]),
+                                baseOrientation=p.getQuaternionFromEuler([0., 0., 0.]),
+                                flags=(p.URDF_USE_IMPLICIT_CYLINDER  |
+                                        p.URDF_USE_INERTIA_FROM_FILE  ))
+            
+            # Eliminate linear and angular damping (i.e., a poor model of drag that
+            # is applied by default to every link)
+            for joint_id in range(p.getNumJoints(self.robot2_id)):
+                p.changeDynamics(self.robot2_id, joint_id, linearDamping=0., angularDamping=0.)
+            
+            # Create a dictionary that maps joint names to joint indices
+            self.joint_map2 = {}
+            for joint_index in range(p.getNumJoints(self.robot2_id)):
+                joint_name = p.getJointInfo(self.robot2_id, joint_index)[1].decode('UTF-8')
+                self.joint_map2[joint_name] = joint_index
 
-        #DUPLICATE FOR ROBOT 2
-        # Disable velocity control on joints so we can use torque control
-        p.setJointMotorControlArray(self.robot2_id, self.joint_ids2,
-                                    p.VELOCITY_CONTROL, forces=np.zeros(self.num_joints))
+            self.joint_ids2 = np.array([self.joint_map2[joint_name] for joint_name in self.joint_names])
+
+            # Set damping of joints (i.e., coefficient of viscous friction)
+            for id in self.joint_ids2:
+                p.changeDynamics(self.robot2_id, id, jointDamping=damping)
+            
+            # Set contact parameters
+            for object_id in [self.robot2_id, self.track_id, self.plane_id]:
+                for joint_id in range(-1, p.getNumJoints(object_id)):
+                    p.changeDynamics(object_id, joint_id,
+                        lateralFriction=1.0,
+                        spinningFriction=0.0,
+                        rollingFriction=0.0,
+                        restitution=0.5,
+                        contactDamping=-1,
+                        contactStiffness=-1)
+
+            # Disable velocity control on joints so we can use torque control
+            p.setJointMotorControlArray(self.robot2_id, self.joint_ids2,
+                                        p.VELOCITY_CONTROL, forces=np.zeros(self.num_joints))
 
     # I changed the arguments of this function to take a specific robot_id and joint_ids so that it 
     # can be used for both the bots.
@@ -265,17 +261,18 @@ class RobotSimulator:
         for i, joint_id in enumerate(self.joint_ids1):
             p.resetJointState(self.robot1_id, joint_id, 0., angvel_wheels)
 
-        # DUPLICATE FOR ROBOT 2
-        # Place the robot, this is where we place the second robot on the other side,
-        # but this is causing issues with the heading error
-        pos = np.array([self.wheel_radius * np.sin(ground_pitch), -initial_lateral_error + (self.track_radius if self.turn_left else -self.track_radius), 0.325 + 1])
-        ori = p.getQuaternionFromEuler([0., initial_pitch, initial_heading_error])
-        p.resetBasePositionAndOrientation(self.robot2_id, pos, ori)
-        vel = np.array([initial_speed * np.cos(initial_heading_error), initial_speed * np.sin(initial_heading_error), 0.])
-        p.resetBaseVelocity(self.robot2_id, linearVelocity=vel)
-        angvel_wheels = initial_speed / self.wheel_radius
-        for i, joint_id in enumerate(self.joint_ids2):
-            p.resetJointState(self.robot2_id, joint_id, 0., angvel_wheels)
+        if (self.two_robots):
+            # DUPLICATE FOR ROBOT 2
+            # Place the robot, this is where we place the second robot on the other side,
+            # but this is causing issues with the heading error
+            pos = np.array([self.wheel_radius * np.sin(ground_pitch), -initial_lateral_error + (self.track_radius if self.turn_left else -self.track_radius), 0.325 + 1])
+            ori = p.getQuaternionFromEuler([0., initial_pitch, initial_heading_error])
+            p.resetBasePositionAndOrientation(self.robot2_id, pos, ori)
+            vel = np.array([initial_speed * np.cos(initial_heading_error), initial_speed * np.sin(initial_heading_error), 0.])
+            p.resetBaseVelocity(self.robot2_id, linearVelocity=vel)
+            angvel_wheels = initial_speed / self.wheel_radius
+            for i, joint_id in enumerate(self.joint_ids2):
+                p.resetJointState(self.robot2_id, joint_id, 0., angvel_wheels)
 
     def set_joint_torque(self, tau, robot_id, joint_ids):
         """
