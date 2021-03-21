@@ -173,18 +173,18 @@ class RobotSimulator:
         a /= np.linalg.norm(a)
         ap = np.array([-a[1], a[0]])
         b = (pr - pl)[0:2]
-        # if not self.turn_left:
-        #     a *= -1.
-        #     ap *= -1.
+        if not self.turn_left:
+            a *= -1.
+            ap *= -1.
         # This is if we want to invert the turn_left condition for the two robots
-        if robot_id == self.robot1_id:
-            if not self.turn_left:
-                a *= -1.
-                ap *= -1.
-        elif robot_id == self.robot2_id:
-            if self.turn_left:
-                a *= -1.
-                ap *= -1.
+        # if robot_id == self.robot1_id:
+        #     if not self.turn_left:
+        #         a *= -1.
+        #         ap *= -1.
+        # elif robot_id == self.robot2_id:
+        #     if self.turn_left:
+        #         a *= -1.
+        #         ap *= -1.
         heading_error = np.arctan2(np.dot(ap, b), np.dot(a, b))
 
         # Forward speed and turning rate
@@ -265,8 +265,8 @@ class RobotSimulator:
             # DUPLICATE FOR ROBOT 2
             # Place the robot, this is where we place the second robot on the other side,
             # but this is causing issues with the heading error
-            pos = np.array([self.wheel_radius * np.sin(ground_pitch), -initial_lateral_error + (self.track_radius if self.turn_left else -self.track_radius), 0.325 + 1])
-            ori = p.getQuaternionFromEuler([0., initial_pitch, initial_heading_error])
+            pos = np.array([self.wheel_radius * np.sin(ground_pitch), -initial_lateral_error + (self.track_radius if self.turn_left else -self.track_radius), 0.325 + 0.3])
+            ori = p.getQuaternionFromEuler([0., initial_pitch, initial_heading_error+np.pi])
             p.resetBasePositionAndOrientation(self.robot2_id, pos, ori)
             vel = np.array([initial_speed * np.cos(initial_heading_error), initial_speed * np.sin(initial_heading_error), 0.])
             p.resetBaseVelocity(self.robot2_id, linearVelocity=vel)
