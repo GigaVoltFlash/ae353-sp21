@@ -87,7 +87,7 @@ class RobotSimulator:
         self.scope_noise = scope_noise
         self.star_depth = 5.
         if stars is None:
-            stars = np.array([[0., 0.], [0.15, 0.], [0., 0.15]])
+            stars = np.array([[0.,0.], [0.15, 0.], [0., 0.15],[-0.2,0],[0,-0.2]])
         else:
             stars = np.array(stars)
             if (len(stars.shape) != 2) or (stars.shape[1] != 2):
