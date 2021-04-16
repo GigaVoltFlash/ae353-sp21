@@ -87,7 +87,7 @@ class RobotSimulator:
         self.scope_noise = scope_noise
         self.star_depth = 5.
         if stars is None:
-            stars = np.array([[0.,0.], [0.15, 0.], [0., 0.15],[-0.2,0],[0,-0.2]])
+            stars = np.array([[0.,0.], [0.15, 0.], [0., 0.15]])
         else:
             stars = np.array(stars)
             if (len(stars.shape) != 2) or (stars.shape[1] != 2):
@@ -207,7 +207,8 @@ class RobotSimulator:
         ori = p.getQuaternionFromEuler(rpy)
         p.resetBasePositionAndOrientation(self.robot_id, pos, ori)
         if angvel is None:
-            angvel = 0.1 * self.rng.standard_normal(3)
+            angvel = 0.
+            # angvel = 0.1 * self.rng.standard_normal(3)
         p.resetBaseVelocity(self.robot_id,
                             linearVelocity=[0., 0., 0.],
                             angularVelocity=angvel)
