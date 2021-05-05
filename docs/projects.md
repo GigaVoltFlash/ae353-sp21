@@ -170,7 +170,7 @@ This report will satisfy the following requirements:
 * It must **tell a story** that shows you have found and explored something that interests you.
 * It must **acknowledge and cite** any sources, including the reports of your colleagues.
 
-Our review of your technical approach will place special emphasis on *TBD.* Our review of your report will place special emphasis on your *TBD*.
+Our review of your technical approach will place special emphasis on your [analysis of failures](#your-tasks).
 
 You may organize your report however you like, but a natural structure might be to have sections titled Introduction, Model, Design, Results, and Conclusion.
 
@@ -215,7 +215,7 @@ There will be an opportunity to race with your friends in a friendly contest on 
 
 In particular, there will be two types of races:
 
-**Competetive** races, in which you "win" as an individual if your drone reaches the finish ring before any other drone. To enter these races, upload your control design to [the "Competetive Designs" Box folder](https://uofi.box.com/s/wlowlj10xfnm85yvok3tdiuqxsaynynd) sometime before midnight on Tuesday, May 4. In particular, you must upload exactly two files:
+**Competitive** races, in which you "win" as an individual if your drone reaches the finish ring before any other drone. To enter these races, upload your control design to [the "Competitive Designs" Box folder](https://uofi.box.com/s/wlowlj10xfnm85yvok3tdiuqxsaynynd) sometime before midnight on Tuesday, May 4. In particular, you must upload exactly two files:
 
 * `netid.py`, with a completely self-contained implementation of your control design, in the format specified by [04_drone/students/template.py]({{ site.github.repository_url }}/tree/main/projects/04_drone/students/template.py)
 * `netid.png`, with an image (keep it professional) that can be used to distinguish your drone from others

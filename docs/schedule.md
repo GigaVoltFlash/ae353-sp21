@@ -514,5 +514,40 @@ description: What we will do from day to day
 ### Day 39: Project - complete example of control design and implementation (Wednesday, April 28)
 
 * [Video](https://mediaspace.illinois.edu/media/t/1_rmdohllm/)
-* [Survey](https://docs.google.com/forms/d/e/1FAIpQLSecFMXRbTQ5YC-JJkblgZYF3oOj9A8_xwOH_DRdSXJ2RQ5Scg/viewform?usp=sf_link)
+* [Survey](https://docs.google.com/forms/d/e/1FAIpQLSecFMXRbTQ5YC-JJkblgZYF3oOj9A8_xwOH_DRdSXJ2RQ5Scg/viewform?usp=sf_link) (<a role="button" data-bs-toggle="collapse" href="#day39-survey-results" aria-expanded="false" aria-controls="day39-survey-results">Results</a>)
 * [Example code: controller, observer, tracking for drone height]({{ site.github.repository_url }}/tree/main/examples/day39_drone)
+
+<div class="collapse" id="day39-survey-results">
+  <div class="card card-body">
+    <iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRsPN0ubGj1voDX4ziPLu3KXuPgP-xovonc_fo7mxgpCxB6PoVqdu6c4VzQpX058h4VLfwIL0K288IV/pubchart?oid=2044263612&amp;format=interactive"></iframe>
+  </div>
+</div>
+
+### Day 40: Project - compare states and state estimates, seed the random number generator (Friday, April 30)
+
+* [Video](https://mediaspace.illinois.edu/media/t/1_t1m0g2d8/)
+* [Survey](https://docs.google.com/forms/d/e/1FAIpQLSdI2tBLF6JMLmG11INtUbY4_3qCXnEf7RYW6o-SfWUPO3dKyw/viewform?usp=sf_link) (<a role="button" data-bs-toggle="collapse" href="#day40-survey-results" aria-expanded="false" aria-controls="day40-survey-results">Results</a>)
+
+<div class="collapse" id="day40-survey-results">
+  <div class="card card-body">
+    <iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT0JYMm15zOQhnI36EB_5M3OMwvyDoSSCtIe2FhPLe5cwe4L86zjyIuJCoKypnVvMB4SWGeoJl_AFmg/pubchart?oid=101963485&amp;format=interactive"></iframe>
+  </div>
+</div>
+
+## Week 16
+
+### Day 41: Q+A, what's next for you in control, DP4 user data, frequency response (Monday, May 3)
+
+* [Video](https://mediaspace.illinois.edu/media/t/1_si18qoc9/)
+* [Survey](https://docs.google.com/forms/d/e/1FAIpQLSfbF4dwrHHZPiWSLCJnZNjhVbQUSOSDliynRj7xn7th9OLLGQ/viewform?usp=sf_link) (<a role="button" data-bs-toggle="collapse" href="#day41-survey-results" aria-expanded="false" aria-controls="day41-survey-results">Results</a>)
+* [Example code: user data and frequency response]({{ site.github.repository_url }}/tree/main/examples/day41_drone)
+
+<div class="collapse" id="day41-survey-results">
+  <div class="card card-body">
+    <iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQT0fS2LMJUJPWM0QOqzd1uvQ0NYHpEgWk_odiS1-Ypm7J6ktlpjZmKMvt0wVSS8FdaJQK6iw6dvnVk/pubchart?oid=168663422&amp;format=interactive"></iframe>
+  </div>
+</div>
+
+### Day 42: Race (Wednesday, May 5)
+
+* [Video](https://mediaspace.illinois.edu/media/t/1_xnwext4f/)
